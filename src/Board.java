@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Board {
     private int [][] board;
@@ -19,17 +21,19 @@ public class Board {
     public int getSize(){
         return board_size;
     }
-//    public List<int[]> getNeighbors(int x, int y){
-//        List<int[]> neighbors = new ArrayList<>();
-//        if(x>0 && x<board_size && y>0 && y<board_size){
-//            for(int i = -1; i<2; i++){
-//                for (int j = -1; j<2; j++){
-//                    if(board[y+][x] == 0)
-//                }
-//            }
-//        }
-//
-//    }
+    public Set<int[]> getNeighbors(int x, int y){
+        Set<int[]> neighbors = new HashSet<>();
+//        int [][] board = this.board;
+        neighbors.add(new int[]{y-1, x-1});
+        neighbors.add(new int[]{y-1, x});
+        neighbors.add(new int[]{y-1, x+1});
+        neighbors.add(new int[]{y, x-1});
+        neighbors.add(new int[]{y, x+1});
+        neighbors.add(new int[]{y+1, x-1});
+        neighbors.add(new int[]{y+1, x});
+        neighbors.add(new int[]{y+1, x+1});
+        return neighbors;
+    }
     public boolean isGameWon(Player player){
         boolean outcome = false;
         for (int i = 0; i < board_size; i++){
