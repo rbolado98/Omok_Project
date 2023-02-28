@@ -13,81 +13,125 @@ public class Controller {
      public void gameMode(int mode){
          this.mode = mode;
      }
-     public void printBoard(){
-          System.out.print("  X");
-          for(int i = 0; i < board.getSize(); i++){
-               System.out.print("\t" + (i+1));
-          }
-          System.out.println();
-          System.out.println("Y");
-
-          for (int i = 0; i < board.getSize(); i++){
-               System.out.print(i+1 + "\t");
-               for (int j = 0; j < board.getSize(); j++){
-                    System.out.print(board.getBoard()[i][j] + "\t");
-               }
-               System.out.println();
-          }
-     }
+//     public void printBoard(){
+//          System.out.print("  X");
+//          for(int i = 0; i < board.getSize(); i++){
+//               System.out.print("\t" + (i+1));
+//          }
+//          System.out.println();
+//          System.out.println("Y");
+//
+//          for (int i = 0; i < board.getSize(); i++){
+//               System.out.print(i+1 + "\t");
+//               for (int j = 0; j < board.getSize(); j++){
+//                    System.out.print(board.getBoard()[i][j] + "\t");
+//               }
+//               System.out.println();
+//          }
+//     }
      public void play(){
+          UI ui = new UI();
           Scanner scanner = new Scanner(System.in);
-          System.out.println("Select Game Mode:");
-          System.out.println("Press 1 for Single Player");
-          System.out.println("Press 2 for PvP");
-          System.out.print("Input number: ");
+          ui.selectMode();
           switch (scanner.nextLine()) {
                case "1" -> {
-                    mode = 1;
+                    gameMode(1);
                }
                case "2" -> {
-                    mode = 2;
+                    gameMode(2);
                }
-               default -> play();
+               default -> {
+                    ui.invalid();
+                    play();
+               }
           }
+          ui.modeSelected(mode);
           if (mode == 1){
-               System.out.println("Player vs Computer has been selected");
-               Player player1 = new HumanPlayer(1);
-               Player player2 = new CPUPlayer(2);
-               Player current = player1;
-               printBoard();
+               p1 = new HumanPlayer(1);
+               p2 = new CPUPlayer(2);
+               Player current = p1;
+//               printBoard();
+               ui.printBoard(board);
                while(true){
-                    System.out.println("Player " + current.pNum + " next.");
-                    System.out.println("Input X Coordinate:");
-                    int x = scanner.nextInt();
-                    System.out.println("Input Y Coordinate:");
-                    int y = scanner.nextInt();
+                    ui.playerNext(current.pNum);
+                    if(p1 == current) {
+                         ui.xIn();
+                         int x = scanner.nextInt();
+                         ui.yIn();
+                         int y = scanner.nextInt();
+                         if (!current.makeMove(x, y, board)) continue;
+                         //HORIZONTAL TEST Passed
+//                         board.manualChange(0, 1, 2);
+//                         board.manualChange(0, 2, 2);
+//                         board.manualChange(0, 3, 2);
+//                         board.manualChange(0, 4, 2);
+//                         board.manualChange(0, 5, 1);
+                         //VERTICAL TEST  passed
+//                         board.manualChange(1, 0, 2);
+//                         board.manualChange(2, 0, 2);
+//                         board.manualChange(3, 0, 2);
+//                         board.manualChange(4, 0, 2);
+//                         board.manualChange(5, 0, 1);
+                         //DIAGONAL WIN MOVE (/) TEST passed
+//                         board.manualChange(1, 6, 2);
+//                         board.manualChange(2, 5, 2);
+//                         board.manualChange(3, 4, 2);
+//                         board.manualChange(4, 3, 2);
+//                         board.manualChange(5, 2, 1);
+                         //DIAGONAL WIN MOVE (\) TEST
+//                         board.manualChange(1, 2, 2);
+//                         board.manualChange(2, 3, 2);
+//                         board.manualChange(3, 4, 2);
+//                         board.manualChange(4, 5, 2);
+//                         board.manualChange(5, 6, 1);
+                         ui.printBoard(board);
+
+                    }
+                    else {
+                         int x = 0;
+                         int y = 0;
+                         ui.cpuMove();
+                         //TEST HEEREEEEEEE FIRST IF IS CORRECT
+                         if (!current.makeMove(x, y, board)) continue;
+//                         if (!current.makeMove(x, y, board)) {
+//                              System.out.println("No Stone Played");
+//                         }
+                    }
                     //!board.placeStone(x, y, current.getpNum()) THIS WAS INSIDE IF BELOW
-                    if (!current.makeMove(x, y, board)) continue;
                     if(board.isGameWon(current)){
-                         printBoard();
-                         System.out.println("Player " + current.pNum + " has WON!");
+//                         printBoard();
+                         ui.printBoard(board);
+                         ui.winNotification(current.pNum);
                          break;
                     }
-                    current = player1 == current? player2 : player1; //short if statement
-                    printBoard();
+                    current = p1 == current? p2 : p1; //short if statement
+//                    printBoard();
+                    ui.printBoard(board);
                }
           }
           if (mode == 2){
-               System.out.println("Player vs Player has been selected");
-               Player player1 = new HumanPlayer(1);
-               Player player2 = new HumanPlayer(2);
-               Player current = player1;
-               printBoard();
+               p1 = new HumanPlayer(1);
+               p2 = new HumanPlayer(2);
+               Player current = p1;
+//               printBoard();
+               ui.printBoard(board);
                while(true){
-                    System.out.println("Player " + current.pNum + " next.");
-                    System.out.println("Input X Coordinate:");
+                    ui.playerNext(current.pNum);
+                    ui.xIn();
                     int x = scanner.nextInt();
-                    System.out.println("Input Y Coordinate:");
+                    ui.yIn();
                     int y = scanner.nextInt();
                     //!board.placeStone(x, y, current.getpNum()) THIS WAS INSIDE IF BELOW
                     if (!current.makeMove(x, y, board)) continue;
                     if(board.isGameWon(current)){
-                         printBoard();
-                         System.out.println("Player " + current.pNum + " has WON!");
+//                         printBoard();
+                         ui.printBoard(board);
+                         ui.winNotification(current.pNum);
                          break;
                     }
-                    current = player1 == current? player2 : player1; //short if statement
-                    printBoard();
+                    current = p1 == current? p2 : p1; //short if statement
+//                    printBoard();
+                    ui.printBoard(board);
                }
           }
      }

@@ -5,4 +5,5 @@ abstract class Player {
         return pNum;
     }
     abstract boolean makeMove(int x, int y, Board board);
+
 }

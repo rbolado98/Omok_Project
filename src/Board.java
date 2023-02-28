@@ -11,6 +11,9 @@ public class Board {
         this.board = new int[board_size][board_size];
     }
     public boolean placeStone(int x, int y, int player){
+//        if (x > board_size-1 || y > board_size-1 || x < 0 || y < 0){
+//            return false;
+//        }
         if(this.board[y-1][x-1]!=0) return false;
         this.board[y-1][x-1]=player;
         return true;
@@ -24,15 +27,34 @@ public class Board {
     public Set<int[]> getNeighbors(int x, int y){
         Set<int[]> neighbors = new HashSet<>();
 //        int [][] board = this.board;
-        neighbors.add(new int[]{y-1, x-1});
-        neighbors.add(new int[]{y-1, x});
-        neighbors.add(new int[]{y-1, x+1});
-        neighbors.add(new int[]{y, x-1});
-        neighbors.add(new int[]{y, x+1});
-        neighbors.add(new int[]{y+1, x-1});
-        neighbors.add(new int[]{y+1, x});
-        neighbors.add(new int[]{y+1, x+1});
+        if(x>=1 && y>=1){
+            neighbors.add(new int[]{y-1, x-1});
+        }
+        if(y>0) {
+            neighbors.add(new int[]{y-1, x});
+        }
+        if(x<board_size-1 && y>0){
+            neighbors.add(new int[]{y-1, x+1});
+        }
+        if(x>=1){
+            neighbors.add(new int[]{y, x-1});
+        }
+        if(y<board_size-1 && x>0) {
+            neighbors.add(new int[]{y + 1, x - 1});
+        }
+        if (x<board_size-1) {
+            neighbors.add(new int[]{y, x + 1});
+        }
+        if (y<board_size-1) {
+            neighbors.add(new int[]{y + 1, x});
+        }
+        if (x<board_size-1 && y<board_size-1) {
+            neighbors.add(new int[]{y + 1, x + 1});
+        }
         return neighbors;
+    }
+    public void manualChange(int x, int y, int z){
+        board[x][y] = z;
     }
     public boolean isGameWon(Player player){
         boolean outcome = false;
