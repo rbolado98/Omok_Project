@@ -5,10 +5,14 @@ import java.util.Set;
 
 public class Board {
     private int [][] board;
-    private int board_size = 15;
+    private int board_size;
 
-    public Board(){
+    public Board(int len){
+        this.board_size = len;
         this.board = new int[board_size][board_size];
+    }
+    public void setBoard_size(int len){
+        this.board_size = len;
     }
     public boolean placeStone(int x, int y, int player){
 //        if (x > board_size-1 || y > board_size-1 || x < 0 || y < 0){
@@ -56,6 +60,7 @@ public class Board {
     public void manualChange(int x, int y, int z){
         board[x][y] = z;
     }
+
     public boolean isGameWon(Player player){
         boolean outcome = false;
         for (int i = 0; i < board_size; i++){
@@ -78,6 +83,10 @@ public class Board {
                 if(board[i][j] == player.pNum){
                     csqstones++;
                     if (csqstones == 5){
+                        board = new int[board_size][board_size];
+                        for(int k = 0; k < 5; k++){
+                            board[i][j-k] = player.getpNum();
+                        }
                         return true;
                     }
                 }
@@ -93,6 +102,10 @@ public class Board {
                 if(board[j][i] == player.pNum){
                     csqstones++;
                     if (csqstones == 5){
+                        board = new int[board_size][board_size];
+                        for(int k = 0; k < 5; k++){
+                            board[j-k][i] = player.getpNum();
+                        }
                         return true;
                     }
                 }
@@ -110,6 +123,10 @@ public class Board {
                         if (board[i + k][j - k] == player.pNum) {
                             csqstones++;
                             if (csqstones == 5) {
+                                board = new int[board_size][board_size];
+                                for(int w = 0; w < 5; w++){
+                                    board[i + k - w][j - k + w] = player.getpNum();
+                                }
                                 return true;
                             }
                         } else {
@@ -131,6 +148,10 @@ public class Board {
                             csqstones++;
 //                            System.out.println("csqstones = " + csqstones);
                             if (csqstones == 5) {
+                                board = new int[board_size][board_size];
+                                for(int w = 0; w < 5; w++){
+                                    board[i + k - w][j + k - w] = player.getpNum();
+                                }
                                 return true;
                             }
                         } else {

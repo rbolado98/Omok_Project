@@ -7,33 +7,34 @@ public class Controller {
      private int mode;
 
      public Controller(){
-          this.board = new Board();
+          UI ui = new UI();
+          this.board = new Board(ui.sizePrompt());
      }
 
      public void gameMode(int mode){
          this.mode = mode;
      }
-//     public void printBoard(){
-//          System.out.print("  X");
-//          for(int i = 0; i < board.getSize(); i++){
-//               System.out.print("\t" + (i+1));
-//          }
-//          System.out.println();
-//          System.out.println("Y");
-//
-//          for (int i = 0; i < board.getSize(); i++){
-//               System.out.print(i+1 + "\t");
-//               for (int j = 0; j < board.getSize(); j++){
-//                    System.out.print(board.getBoard()[i][j] + "\t");
+//     public boolean gameMode(String mode){
+//          switch (mode) {
+//               case "1" -> {
+//                    this.mode = 1;
 //               }
-//               System.out.println();
-//          }
+//               case "2" -> {
+//                    this.mode = 2;
+//               }
+//               default -> {
+//                    return false;
+//               return true;
 //     }
+//           if (!gameMode(ui.selectMode()){
+//               ui.invalid();
+//               play();
+//           }
      public void play(){
           UI ui = new UI();
-          Scanner scanner = new Scanner(System.in);
-          ui.selectMode();
-          switch (scanner.nextLine()) {
+//          Scanner scanner = new Scanner(System.in);
+//          board.setBoard_size(ui.sizePrompt());
+          switch (ui.selectMode()) {
                case "1" -> {
                     gameMode(1);
                }
@@ -45,6 +46,7 @@ public class Controller {
                     play();
                }
           }
+//          board.setBoard_size(ui.sizePrompt());
           ui.modeSelected(mode);
           if (mode == 1){
                p1 = new HumanPlayer(1);
@@ -55,11 +57,16 @@ public class Controller {
                while(true){
                     ui.playerNext(current.pNum);
                     if(p1 == current) {
-                         ui.xIn();
-                         int x = scanner.nextInt();
-                         ui.yIn();
-                         int y = scanner.nextInt();
-                         if (!current.makeMove(x, y, board)) continue;
+                         int [] coordinates= ui.takeCoordinates();
+                         if (coordinates[0] < 0 || coordinates[1] <0){
+                              ui.leaveGame();
+                              break;
+                         }
+                         if (coordinates[0] > board.getSize() || coordinates[1] > board.getSize()){
+                              ui.indexOOB();
+                              continue;
+                         }
+                         if (!current.makeMove(coordinates[0], coordinates[1], board)) continue;
                          //HORIZONTAL TEST Passed
 //                         board.manualChange(0, 1, 2);
 //                         board.manualChange(0, 2, 2);
@@ -117,12 +124,21 @@ public class Controller {
                ui.printBoard(board);
                while(true){
                     ui.playerNext(current.pNum);
-                    ui.xIn();
-                    int x = scanner.nextInt();
-                    ui.yIn();
-                    int y = scanner.nextInt();
+//                    ui.xIn();
+//                    int x = scanner.nextInt();
+//                    ui.yIn();
+//                    int y = scanner.nextInt();
+                    int [] coordinates= ui.takeCoordinates();
+                    if (coordinates[0] < 0 || coordinates[1] <0){
+                         ui.leaveGame();
+                         break;
+                    }
+                    if (coordinates[0] > board.getSize() || coordinates[1] > board.getSize()){
+                         ui.indexOOB();
+                         continue;
+                    }
                     //!board.placeStone(x, y, current.getpNum()) THIS WAS INSIDE IF BELOW
-                    if (!current.makeMove(x, y, board)) continue;
+                    if (!current.makeMove(coordinates[0], coordinates[1], board)) continue;
                     if(board.isGameWon(current)){
 //                         printBoard();
                          ui.printBoard(board);
