@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class Controller {
      private Board board;
      private Player p1;
@@ -105,7 +103,7 @@ public class Controller {
 //                         }
                     }
                     //!board.placeStone(x, y, current.getpNum()) THIS WAS INSIDE IF BELOW
-                    if(board.isGameWon(current)){
+                    if(board.isWonBy(current)){
 //                         printBoard();
                          ui.printBoard(board);
                          ui.winNotification(current.pNum);
@@ -139,7 +137,7 @@ public class Controller {
                     }
                     //!board.placeStone(x, y, current.getpNum()) THIS WAS INSIDE IF BELOW
                     if (!current.makeMove(coordinates[0], coordinates[1], board)) continue;
-                    if(board.isGameWon(current)){
+                    if(board.isWonBy(current)){
 //                         printBoard();
                          ui.printBoard(board);
                          ui.winNotification(current.pNum);

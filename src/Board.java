@@ -1,11 +1,13 @@
-import java.util.ArrayList;
-import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Board {
     private int [][] board;
     private int board_size;
+    public Board(){
+        this.board_size = 15;
+        this.board = new int[15][15];
+    }
 
     public Board(int len){
         this.board_size = len;
@@ -13,6 +15,9 @@ public class Board {
     }
     public void setBoard_size(int len){
         this.board_size = len;
+    }
+    public void clear(){
+        this.board = new int[15][15];
     }
     public boolean placeStone(int x, int y, int player){
 //        if (x > board_size-1 || y > board_size-1 || x < 0 || y < 0){
@@ -57,16 +62,41 @@ public class Board {
         }
         return neighbors;
     }
-    public void manualChange(int x, int y, int z){
-        board[x][y] = z;
+    public void replaceBoard(int[][] replacement){
+        this.board = replacement;
+    }
+    public boolean isFull(){
+        for(int i = 0; i<board_size; i++){
+            for(int j = 0; j<board_size; j++){
+                if(board[i][j] == 0){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public boolean isEmpty(int x, int y) {
+        return board[x-1][y-1] == 0;
+    }
+    public boolean isOccupied(int x, int y) {
+        return board[x-1][y-1] != 0;
+    }
+    public boolean isOccupiedBy(int x, int y, int player) {
+        return board[x-1][y-1] == player;
+    }
+    public int playerAt(int x, int y) {
+        return board[x-1][y-1];
+    }
+    public void manualChange(int x, int y, int player){
+        board[x][y] = player;
     }
 
-    public boolean isGameWon(Player player){
+    public boolean isWonBy(Player player){
         boolean outcome = false;
         for (int i = 0; i < board_size; i++){
             for(int j = 0; j < board_size; j++){
                 if (board[i][j] != 0){
-                    outcome = check5(player);
+                    outcome = winningRow(player);
                     if(outcome){
                         return true;
                     }
@@ -75,7 +105,7 @@ public class Board {
         }
         return false;
     }
-    public boolean check5(Player player){
+    public boolean winningRow(Player player){
         //horizontal
         for(int i=0; i<board_size; i++){
             int csqstones = 0;
@@ -163,5 +193,20 @@ public class Board {
         }
         return false;
     }
+    public static class Place {
+        public final int x;
 
+        public final int y;
+
+        /** Create a new place of the given indices.
+         *
+         * @param x 0-based column (vertical) index
+         * @param y 0-based row (horizontal) index
+         */
+        public Place(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+    }
 }
