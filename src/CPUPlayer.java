@@ -107,6 +107,7 @@ public class CPUPlayer extends Player{
             for(int j = 0; j< board.getSize(); j++){
                 if(board.getBoard()[i][j] == 1){
                     Set<int[]> neighbors = board.getNeighbors(i, j);
+
                     //select random neighbor of oponent's play
                     int[][] arrayOfArrays = neighbors.toArray(new int[0][]);
                     for(int k = 0; k< arrayOfArrays.length; k++){

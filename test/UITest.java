@@ -61,7 +61,7 @@ class UITest {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         UI ui = new UI(byteArrayInputStream, byteArrayOutputStream);
         int[] in = ui.takeCoordinates();
-        assertEquals(new int[]{1, 1}, in);
+        assertArrayEquals(new int[]{1, 1}, in);
     }
 
     @Test

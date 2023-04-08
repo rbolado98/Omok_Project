@@ -20,9 +20,6 @@ public class Board {
         this.board = new int[15][15];
     }
     public boolean placeStone(int x, int y, int player){
-//        if (x > board_size-1 || y > board_size-1 || x < 0 || y < 0){
-//            return false;
-//        }
         if(this.board[y-1][x-1]!=0) return false;
         this.board[y-1][x-1]=player;
         return true;
@@ -35,7 +32,6 @@ public class Board {
     }
     public Set<int[]> getNeighbors(int x, int y){
         Set<int[]> neighbors = new HashSet<>();
-//        int [][] board = this.board;
         if(x>=1 && y>=1){
             neighbors.add(new int[]{y-1, x-1});
         }
@@ -90,7 +86,26 @@ public class Board {
     public void manualChange(int x, int y, int player){
         board[x][y] = player;
     }
-
+    public boolean checkTie(){
+        for(int i = 0; i<board_size; i++){
+            for(int j = 0; j<board_size; j++){
+                if(board[i][j] == 0){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public boolean gameStarted(){
+        for(int i = 0; i<board_size; i++){
+            for(int j = 0; j<board_size; j++){
+                if(board[i][j] != 0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public boolean isWonBy(Player player){
         boolean outcome = false;
         for (int i = 0; i < board_size; i++){
@@ -192,6 +207,17 @@ public class Board {
             }
         }
         return false;
+    }
+    public void printBoard(){
+        for(int i = 0; i<board_size; i++){
+            for(int j = 0; j<board_size; j++){
+                System.out.print(board[i][j]);
+            }
+            System.out.println();
+        }
+    }
+    public void resetBoard(){
+        board = new int[board_size][board_size];
     }
     public static class Place {
         public final int x;
